@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import {Button} from 'react-bootstrap';
 
 export default class HelloWorld extends React.Component {
 
@@ -7,7 +8,11 @@ export default class HelloWorld extends React.Component {
   }
 
   render() {
-    return <h1>Hello Flux</h1>
+    return (
+      <div>
+        <Button bsStyle="info">Primary</Button>
+      </div>
+    )
   }
 
 };

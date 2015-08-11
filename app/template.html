@@ -6,7 +6,9 @@
   </head>
   <body>
     <div id="hello"></div>
-    <script src={%= o.htmlWebpackPlugin.options.dev %}></script>
+    {% if (o.htmlWebpackPlugin.options.dev) { %}
+      <script src={%= o.htmlWebpackPlugin.options.dev %}></script>
+    {% } %}
 
   </body>
 </html>

@@ -3,13 +3,16 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, 'app/main.js')
-  ],
+  entry: {
+    app: [
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/only-dev-server',
+      path.join(__dirname, 'app/main.js')
+    ],
+    vendors: ['react', 'react-bootstrap']
+  },
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.join(__dirname, 'build'),
     filename: 'bundle.js'
   },
   module: {
@@ -20,12 +23,19 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: 'style!css'
+    }, {
+      test: /\.less$/,
+      loader: 'style!css!less'
+    }, {
+      test: /\.(png|jpg|git|woff|woff2|ttf|eot|svg)$/,
+      loader: 'url?limit=10000'
     }]
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './template.html'),
+      template: path.join(__dirname, 'app/template.html'),
       inject: 'body',
       dev: 'http://localhost:8080/webpack-dev-server.js'
     })
