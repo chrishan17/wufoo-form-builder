@@ -4,3 +4,7 @@ node_modules/
 # ignore system files
 *.log*
 .DS_Store
+
+# ignore build and dist
+build
+dist
