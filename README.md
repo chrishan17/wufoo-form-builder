@@ -20,3 +20,12 @@ Create a Wufoo-like form builder. Use `localstorage` as data storage.
 * Less
 * Morearty
 * React-bootstrap
+
+## Install
+`npm install`
+
+## Dev
+`npm run dev`
+
+## Production
+`npm run deploy`
