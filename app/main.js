@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import HelloWorld from './components/HelloWorld.jsx';
+import App from './components/App/App.jsx';
 
-React.render(<HelloWorld />, document.getElementById('hello'));
+React.render(<App />, document.getElementById('app'));
