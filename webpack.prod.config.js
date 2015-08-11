@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     app: path.join(__dirname, 'app/main.js'),
-    vendors: ['react, react-bootstrap']
+    vendors: ['react']
   },
   output: {
     path: path.join(__dirname, 'dist'),

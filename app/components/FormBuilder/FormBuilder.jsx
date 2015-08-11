@@ -1,7 +1,6 @@
 import React from 'react';
-import {Button} from 'react-bootstrap';
 
-export default class HelloWorld extends React.Component {
+export default class FormBuilder extends React.Component {
 
   shouldComponentUpdate() {
     return React.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
@@ -9,8 +8,9 @@ export default class HelloWorld extends React.Component {
 
   render() {
     return (
-      <div>
-        <Button bsStyle="info">Primary</Button>
+      <div className="FormBuilder">
+        <div className="container">
+        </div>
       </div>
     )
   }

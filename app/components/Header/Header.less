@@ -1,0 +1,67 @@
+@import '../variables.less';
+
+.Header {
+ .Header-container {
+   height: 3em;
+   background: #cf3b19;
+   border-top: 1px solid #b83a1f;
+   border-left: 1px solid #b83a1f;
+   .logo {
+     height: 3em;
+     display: block;
+     background: url(wflogo.png) no-repeat left top;
+     overflow: Hidden;
+   }
+   .menu {
+     position: absolute;
+     right: 0;
+     top: 12px;
+     list-style: none;
+     margin-right: 10px;
+     li {
+       display: block;
+       float: left;
+       margin: 0 2px;
+       color: #FFFFCC;
+     }
+     li a {
+       font-size: 95%;
+       display: block;
+       text-decoration: none;
+       color: #FFDA68;
+       font-weight: bold;
+       border-right: 1px solid #841700;
+       border-bottom: 1px solid #9F1E00;
+       padding: 0 10px 1px 30px;
+       margin: 0 auto;
+       line-height: 25px;
+       background: #A52610 url(../public/sprite.png) no-repeat;
+       border-top-right-radius: 7px;
+       border-top-left-radius: 7px;
+       box-shadow: rgba(0,0,0,0.15) 1px 0px 2px;
+       text-shadow: rgba(0,0,0,0.3) 1px 1px 1px;
+       &:hover {
+         background-color: #ffd97a;
+         color: #000;
+       }
+       &:focus {
+         background-color: #8bbb40;
+         color: #eee;
+
+       }
+     }
+     .frm a { background-position: -1px -4px; }
+     .rpt a { background-position: -1px -41px; }
+     .thm a { background-position: -1px -77px; }
+     .usr a { background-position: -1px -113px; margin-right: 20px; }
+     .pln a, .act a, .lgo a { background-image: none; padding: 0 10px 1px 10px; color: #eee; }
+     .inf a { background-position: -1px -150px; color: #eee; }
+     .lgo a {
+       margin-left: 20px;
+       border-color: #333;
+       background-color: #333;
+     }
+
+   }
+ }
+}
