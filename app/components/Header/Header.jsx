@@ -9,7 +9,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="Header">
+      <header className="Header">
         <nav className="Header-container">
           <a className="logo" href="#"></a>
           <ul className="menu">
@@ -23,7 +23,7 @@ export default class Header extends React.Component {
             <li className="lgo"><a href="#">Logout</a></li>
           </ul>
         </nav>
-      </div>
+      </header>
     )
   }
 

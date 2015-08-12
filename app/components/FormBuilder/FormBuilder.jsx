@@ -1,5 +1,7 @@
 import React from 'react';
 import './FormBuilder.less';
+import FormSelector from './FormSelector/FormSelector.jsx';
+import FormBody from './FormBody/FormBody.jsx';
 
 export default class FormBuilder extends React.Component {
 
@@ -11,6 +13,8 @@ export default class FormBuilder extends React.Component {
     return (
       <div className="FormBuilder">
         <div className="FormBuilder-container">
+          <FormSelector />
+          <FormBody />
         </div>
       </div>
     )

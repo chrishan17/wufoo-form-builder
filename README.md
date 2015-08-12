@@ -10,7 +10,7 @@ Create a Wufoo-like form builder. Use `localstorage` as data storage.
 * Multiple choice
 * Checkbox
 * Dropdown
-* Adress
+* Address
 
 ## Technologies
 * React

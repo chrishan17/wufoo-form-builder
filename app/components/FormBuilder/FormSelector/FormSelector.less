@@ -1,0 +1,131 @@
+@import '../../variables.less';
+
+.FormSelector {
+  height: auto;
+  min-height: 500px;
+  float: left;
+  width: @formSelectorWidth;
+  .FormSelector-container {
+    .tabs {
+      margin-bottom: 0;
+      overflow: hidden;
+      background-color: #FFE79F;
+      list-style-type: none;
+      li {
+        float: left;
+        font-size: 85%;
+      }
+      a {
+        display: block;
+        color: #666;
+        cursor: pointer;
+        padding: 4px 6px 4px 25px;
+        margin-top: 4px;
+        text-decoration: none;
+        background-image: url('../../public/tabtri.gif');
+        background-repeat: no-repeat;
+        background-clip: padding-box;
+        border-top-right-radius: 12px;
+        border-top-left-radius: 12px;
+      }
+      .afi {
+        width: 30%;
+        margin-left: 4px;
+        a {
+          background-color: #FDFDED;
+          background-position: 2px -3px;
+          border: 1px solid #EFD586;
+          border-bottom: none;
+          color: #BF6f2F;
+        }
+      }
+      .cfi {
+        width: 33%;
+        a {
+          background-position: 3px -27px;
+        }
+      }
+      .cfo {
+        a {
+          background-position: 3px -27px;
+        }
+      }
+    }
+
+    .add-fields {
+      clear: both;
+      padding: 15px 12px 15px 19px;
+      h3 {
+        font-size: 11px;
+        padding: 4px 0;
+        font-weight: bold;
+        margin: 0;
+      }
+      .standard {
+        margin-bottom: 20px;
+      }
+      .standard h3 {
+        color: #236ABF;
+      }
+      .fancy h3 {
+        color: #CF3B19;
+      }
+      .fields {
+        overflow: hidden;
+      }
+      .field {
+        position: relative;
+        cursor: pointer;
+        width: 47%;
+        float: left;
+        padding: 4px 0 4px 34px;
+        border: 1px solid #eee;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+        border-radius: 9px;
+        margin-top: 5px;
+        margin-right: 10px;
+        background: -webkit-linear-gradient(top, #fff, #E9E9E9);
+        &:hover {
+          background: #dfeea3;
+          border: 1px solid #c6d880;
+          color: #444;
+        }
+        &:active {
+          background: #c1df5d;
+          border: 1px solid #93b825;
+          color: #333;
+        }
+        &::before {
+          background-image: url(../../public/sprite.png);
+          background-repeat: no-repeat;
+          content: " ";
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: 8px;
+          top: 6px;
+        }
+      }
+      .single-line::before {
+        background-position: -10px -549px;
+      }
+      .multiple-line::before {
+        background-position: -10px -585px;
+      }
+      .multiple-choice::before {
+        background-position: -10px -619px;
+      }
+      .checkboxes::before {
+        background-position: -10px -688px;
+      }
+      .dropdown::before {
+        background-position: -10px -722px;
+      }
+      .address::before {
+        background-position: -10px -794px;
+      }
+    }
+  }
+}
