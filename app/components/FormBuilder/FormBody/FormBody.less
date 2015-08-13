@@ -1,9 +1,84 @@
 @import '../../variables.less';
 
-.FormBody{
+.FormBody {
   float: left;
   width: @formBodyWidth;
   .FormBody-container {
+    form {
+      overflow: auto;
+      margin: 10px 0 0 15px;
+      padding: 0 0 95px 0;
+      ul {
+        height: 395px;
+        overflow: scroll;
+        list-style-type: none;
+        li {
+          width: 64%;
+          padding: 6px 1% 9px 1%;
+          cursor: pointer;
+          &:hover {
+            border: 1px dashed #3B699F;
+          }
+         & > label {
+           margin-bottom: 10px;
+           font-weight: bold;
+         }
+         div {
+           margin: 5px 0;
+         }
+         input[type=radio] {
+           margin-right: 5px;
+         }
+         input, textarea {
+           border-top: 1px solid #7c7c7c;
+           border-left: 1px solid #c3c3c3;
+           border-right: 1px solid #c3c3c3;
+           border-bottom: 1px solid #ddd;
+           background: #fff;
+         }
+         input, textarea, select {
+           pointer-events: none;
+         }
+        }
+        li.editing {
+          border: 1px solid #C2D7EF;
+          background-color: #DFEFFF;
+        }
+        .single-line input {
+          width: 50%;
+        }
+        .multiple-line textarea {
+          width: 100%;
+          height: 10em;
+        }
+        select {
+          width: 50%;
+        }
+        .address {
+          overflow: hidden;
+          input, select {
+            width: 100%;
+          }
+          .container div {
+            margin-top: 10px;
+          }
+          .container label {
+            font-size: 85%;
+            line-height: 160%;
+            color: #444;
+            display: block;
+          }
+          .city,  .postal-zip-code {
+            width: 48%;
+            float: left;
+          }
+          .state-province-region, .country {
+            width: 48%;
+            float: right
+          }
+        }
+      }
+    }
 
   }
 }

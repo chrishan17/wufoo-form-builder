@@ -3,10 +3,6 @@ import './Header.less';
 
 export default class Header extends React.Component {
 
-  shouldComponentUpdate() {
-    return React.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
-  }
-
   render() {
     return (
       <header className="Header">

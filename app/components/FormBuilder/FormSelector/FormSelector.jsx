@@ -3,11 +3,41 @@ import './FormSelector.less';
 
 export default class FormSelector extends React.Component {
 
-  shouldComponentUpdate() {
-    return React.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
+  _onCreate(type) {
+    this.props.onCreate(type)
+  }
+
+  _fieldMap(field, index) {
+    return <div className={"field " + field.type} key={index} onClick={this._onCreate.bind(this, field.type)}>{field.content}</div>
   }
 
   render() {
+    const standardFieldTypes = [{
+      type: 'single-line',
+      content: 'Single Line'
+    }, {
+      type: 'multiple-line',
+      content: 'Multiple Line'
+    }, {
+      type: 'multiple-choice',
+      content: 'Multiple Choice'
+    }, {
+      type: 'checkboxes',
+      content: 'Checkboxes'
+    }, {
+      type: 'dropdown',
+      content: 'Dropdown'
+    }];
+
+    const fancyFieldTypes = [{
+      type: 'address',
+      content: 'Address'
+    }];
+
+    const standardFields = standardFieldTypes.map(this._fieldMap.bind(this));
+
+    const fancyFields = fancyFieldTypes.map(this._fieldMap.bind(this));
+
     return (
       <div className="FormSelector">
         <div className="FormSelector-container">
@@ -20,16 +50,14 @@ export default class FormSelector extends React.Component {
             <div className="standard">
               <h3>Standard</h3>
               <div className="fields">
-                <div className="field single-line">Single Line Text</div>
-                <div className="field multiple-line">Multiple Line Text</div>
-                <div className="field multiple-choice">Multiple Choice</div>
-                <div className="field checkboxes">Checkboxes</div>
-                <div className="field dropdown">Dropdown</div>
+                {standardFields}
               </div>
             </div>
             <div className="fancy">
               <h3>Fancy Pants</h3>
-              <div className="field address">Address</div>
+              <div className="fields">
+                {fancyFields}
+              </div>
             </div>
           </div>
         </div>

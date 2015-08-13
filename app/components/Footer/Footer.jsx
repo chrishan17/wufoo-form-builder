@@ -3,10 +3,6 @@ import './Footer.less';
 
 export default class Footer extends React.Component {
 
-  shouldComponentUpdate() {
-    return React.addons.PureRenderMixin.shouldComponentUpdate.apply(this, arguments);
-  }
-
   render() {
     return (
       <footer className="Footer">
