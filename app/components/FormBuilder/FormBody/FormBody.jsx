@@ -14,7 +14,7 @@ class FormBody extends React.Component {
     let fieldsDivs = fields.map((field, index) => {
       let fieldBinding = binding.sub(index);
       return (
-        <Field binding={fieldBinding} key={fieldBinding.toJS('id')} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit}/>
+        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} key={fieldBinding.toJS('id')} />
       );
     });
 
@@ -25,7 +25,8 @@ class FormBody extends React.Component {
             <div className="wuform"></div>
             <ul className="field-list">{fieldsDivs}</ul>
           </form>
-          <div className="form-buttons"></div>
+          <div className="form-buttons">
+          </div>
         </div>
       </div>
     )
@@ -179,6 +180,9 @@ class Field extends React.Component {
     let fieldForm = (
       <li className={"Field " + fieldType + fieldStatus} onClick={this._onEdit.bind(this, fieldId)}>
         {fieldFormDiv}
+        <div className="fieldActions" onClick={ (function(e) { e.stopPropagation(); this._onDestroy(fieldId)}).bind(this) }>
+          <img className="delete" />
+        </div>
       </li>
     )
 

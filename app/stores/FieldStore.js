@@ -10,11 +10,7 @@ var lastEditId;
 var lastEditIndex;
 
 var initialState = {
-  fields: [{
-    id: 1,
-    type: 'single-line',
-    editing: false
-  }]
+  fields: []
 }
 
 var Ctx = Morearty.createContext({
@@ -37,6 +33,8 @@ var destroy = id => {
     let fieldIndex = fields.findIndex(item => {
       return item.get('id') === id;
     });
+    lastEditIndex = null;
+    lastEditId = null;
     return fields.delete(fieldIndex);
   });
 }
@@ -52,9 +50,13 @@ var edit = id => {
       return field.get('id') === id;
     });
 
-    lastEditId = id;
-    lastEditIndex = fieldIndex;
-    Ctx.getBinding().sub('fields').sub(fieldIndex).set('editing', true);;
+    if (fieldIndex !== -1) {
+      lastEditId = id;
+      lastEditIndex = fieldIndex;
+      Ctx.getBinding().sub('fields').sub(fieldIndex).set('editing', true);;
+    } else {
+      console.log('error');
+    }
   }
 
 }

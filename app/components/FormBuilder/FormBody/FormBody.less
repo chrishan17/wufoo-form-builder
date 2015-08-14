@@ -9,10 +9,11 @@
       margin: 10px 0 0 15px;
       padding: 0 0 95px 0;
       ul {
-        height: 395px;
+        min-height: 395px;
         overflow: scroll;
         list-style-type: none;
         li {
+          position: relative;
           width: 64%;
           padding: 6px 1% 9px 1%;
           cursor: pointer;
@@ -75,6 +76,28 @@
           .state-province-region, .country {
             width: 48%;
             float: right
+          }
+        }
+
+        li .fieldActions {
+          display: none;
+        }
+
+        li.editing .fieldActions {
+          display: block;
+          position: absolute;
+          background: #f5f5f5;
+          border: 1px solid #bbb;
+          line-height: 18px;
+          padding: 5px 4px 2px 4px;
+          border-radius: 50%;
+          box-shadow: rgba(0,0,0,0.15) 0px 1px 3px;
+          z-index: 1000;
+          right: 10px;
+          bottom: -20px;
+
+          .delete {
+            content: url('./delete.png');
           }
         }
       }
