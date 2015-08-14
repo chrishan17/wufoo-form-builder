@@ -1,8 +1,6 @@
 @import '../../variables.less';
 
 .FormSelector {
-  height: auto;
-  min-height: 500px;
   float: left;
   width: @formSelectorWidth;
   .FormSelector-container {
@@ -11,26 +9,24 @@
       overflow: hidden;
       background-color: #FFE79F;
       list-style-type: none;
-      li {
+      font-size: 85%;
+      li.tab {
         float: left;
-        font-size: 85%;
+        a {
+          display: block;
+          color: #666;
+          cursor: pointer;
+          padding: 4px 6px 4px 25px;
+          margin-top: 4px;
+          text-decoration: none;
+          background-image: url('../../public/tabtri.gif');
+          background-repeat: no-repeat;
+          border-top-right-radius: 12px;
+          border-top-left-radius: 12px;
+          background-position: 3px -27px;
+        }
       }
-      a {
-        display: block;
-        color: #666;
-        cursor: pointer;
-        padding: 4px 6px 4px 25px;
-        margin-top: 4px;
-        text-decoration: none;
-        background-image: url('../../public/tabtri.gif');
-        background-repeat: no-repeat;
-        background-clip: padding-box;
-        border-top-right-radius: 12px;
-        border-top-left-radius: 12px;
-      }
-      .afi {
-        width: 30%;
-        margin-left: 4px;
+      li.showing {
         a {
           background-color: #FDFDED;
           background-position: 2px -3px;
@@ -39,35 +35,34 @@
           color: #BF6f2F;
         }
       }
-      .cfi {
-        width: 33%;
-        a {
-          background-position: 3px -27px;
-        }
+      .add-field {
+        width: 30%;
+        margin-left: 4px;
       }
-      .cfo {
-        a {
-          background-position: 3px -27px;
-        }
+      .field-setting {
+        width: 33%;
       }
     }
 
-    .add-fields {
+    .tab-body {
+      margin: 15px;
+    }
+
+    .tab-body.add-field {
       clear: both;
-      padding: 15px 12px 15px 19px;
       h3 {
         font-size: 11px;
         padding: 4px 0;
         font-weight: bold;
         margin: 0;
       }
-      .standard {
+      .standard-field {
         margin-bottom: 20px;
       }
-      .standard h3 {
+      .standard-field h3 {
         color: #236ABF;
       }
-      .fancy h3 {
+      .fancy-field h3 {
         color: #CF3B19;
       }
       .fields {
@@ -125,6 +120,40 @@
       }
       .address::before {
         background-position: -10px -794px;
+      }
+    }
+
+    .tab-body.field-setting {
+      font-size: 11px;
+
+      label {
+        display: block;
+        font-weight: bold;
+        line-height: 200%;
+      }
+      textarea {
+        width: 70%;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 3px;
+        margin: 0;
+        border-radius: 7px;
+        height: 3.7em;
+      }
+      select {
+        width: 50%;
+      }
+    }
+  }
+  .FormSelector-container.field-setting {
+    .tabs {
+      background: #CFE7FF;
+      li.field-setting {
+        a {
+          border: 1px solid #A4CAEF;
+          border-bottom: 0;
+          background-color: #EFF6FF;
+        }
       }
     }
   }
