@@ -26,6 +26,7 @@ Create a Wufoo-like form builder. Use `localstorage` as data storage.
 
 ## Dev
 `npm run dev`
+listening on the 8080 port
 
 ## Production
 `npm run deploy`
