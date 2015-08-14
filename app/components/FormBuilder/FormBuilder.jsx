@@ -11,13 +11,15 @@ class FormBuilder extends React.Component {
 
   render() {
 
-    var binding = this.getDefaultBinding();
+    let binding = this.getDefaultBinding();
+    let fieldsBinding = binding.sub('fields');
+    let nowShowing = binding.get('nowShowing');
 
     return (
       <div className="FormBuilder">
-        <div className="FormBuilder-container">
-          <FormSelector binding={binding} onCreate={this._onCreate} />
-          <FormBody binding={binding} onDestroy={this._onDestroy} onEdit={this._onEdit}/>
+        <div className={"FormBuilder-container " + nowShowing}>
+          <FormSelector binding={binding} onCreate={this._onCreate} onChangeTab={this._onChangeTab} onUpdate={this._onUpdate} />
+          <FormBody binding={fieldsBinding} onDestroy={this._onDestroy} onEdit={this._onEdit} onAddBelow={this._onAddBelow} />
         </div>
       </div>
     )
@@ -31,8 +33,20 @@ class FormBuilder extends React.Component {
     FieldActions.destroy(id);
   }
 
-  _onEdit(id) {
-    FieldActions.edit(id);
+  _onEdit(id, type) {
+    FieldActions.edit(id, type);
+  }
+
+  _onChangeTab(tabType) {
+    FieldActions.changeTab(tabType);
+  }
+
+  _onUpdate(fieldIndex, fieldContent) {
+    FieldActions.update(fieldIndex, fieldContent);
+  }
+
+  _onAddBelow(id, type) {
+    FieldActions.addBelow(id, type);
   }
 
 };

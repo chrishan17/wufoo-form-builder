@@ -9,23 +9,26 @@
       margin: 10px 0 0 15px;
       padding: 0 0 95px 0;
       ul {
+        width: 64%;
         min-height: 395px;
         overflow: scroll;
         list-style-type: none;
         li {
           position: relative;
-          width: 64%;
           padding: 6px 1% 9px 1%;
           cursor: pointer;
           &:hover {
             border: 1px dashed #3B699F;
           }
-         & > label {
-           margin-bottom: 10px;
-           font-weight: bold;
-         }
-         div {
+         .field-container {
            margin: 5px 0;
+           & > div {
+             margin: 5px 0;
+           }
+           & > label {
+              margin-bottom: 10px;
+              font-weight: bold;
+           }
          }
          input[type=radio] {
            margin-right: 5px;
@@ -56,9 +59,11 @@
           width: 50%;
         }
         .address {
-          overflow: hidden;
           input, select {
             width: 100%;
+          }
+          .container {
+            overflow: hidden;
           }
           .container div {
             margin-top: 10px;
@@ -69,7 +74,7 @@
             color: #444;
             display: block;
           }
-          .city,  .postal-zip-code {
+          .city, .postal-zip-code {
             width: 48%;
             float: left;
           }
@@ -90,14 +95,19 @@
           border: 1px solid #bbb;
           line-height: 18px;
           padding: 5px 4px 2px 4px;
-          border-radius: 50%;
+          border-radius: 12px;
           box-shadow: rgba(0,0,0,0.15) 0px 1px 3px;
           z-index: 1000;
           right: 10px;
-          bottom: -20px;
+          bottom: -15px;
 
           .delete {
             content: url('./delete.png');
+          }
+
+          .add {
+            content: url('./add.png');
+            margin-right: 5px;
           }
         }
       }

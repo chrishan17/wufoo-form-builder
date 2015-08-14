@@ -19,11 +19,38 @@ var FieldActions = {
     });
   },
 
-  edit(id) {
+  edit(id, type) {
     console.log('edit');
     AppDispatcher.dispatch({
       actionType: FieldConstants.FIELD_EDIT,
-      id
+      id,
+      type
+    });
+  },
+
+  changeTab(tabType) {
+    console.log('changeTab');
+    AppDispatcher.dispatch({
+      actionType: FieldConstants.CHANGE_TAB,
+      tabType
+    });
+  },
+
+  update(fieldIndex, fieldContent) {
+    console.log('update');
+    AppDispatcher.dispatch({
+      actionType: FieldConstants.FIELD_UPDATE,
+      fieldIndex,
+      fieldContent
+    });
+  },
+
+  addBelow(id, type) {
+    console.log('add below');
+    AppDispatcher.dispatch({
+      actionType: FieldConstants.FIELD_ADD_BELOW,
+      id,
+      type
     });
   }
 }

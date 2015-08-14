@@ -4,6 +4,12 @@ import reactMixin from 'react-mixin';
 import './FormBody.less';
 import FieldActions from '../../../actions/FieldActions.js'
 
+var fieldWidth = {
+  'small': '30%',
+  'medium': '50%',
+  'large': '100%'
+}
+
 @reactMixin.decorate(Morearty.Mixin)
 class FormBody extends React.Component {
 
@@ -14,7 +20,7 @@ class FormBody extends React.Component {
     let fieldsDivs = fields.map((field, index) => {
       let fieldBinding = binding.sub(index);
       return (
-        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} key={fieldBinding.toJS('id')} />
+        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} onAddBelow={this.props.onAddBelow} key={fieldBinding.toJS('id')} />
       );
     });
 
@@ -41,8 +47,12 @@ class Field extends React.Component {
     this.props.onDestroy(id);
   }
 
-  _onEdit(id) {
-    this.props.onEdit(id);
+  _onEdit(id, type) {
+    this.props.onEdit(id, type);
+  }
+
+  _onAddBelow(id, type) {
+    this.props.onAddBelow(id, type);
   }
 
   render() {
@@ -50,24 +60,28 @@ class Field extends React.Component {
 
     let fieldType = binding.get('type');
     let fieldId = binding.get('id');
+    let fieldContent = binding.get('content').toJS();
+    let fieldSizeStyle = {
+      width: fieldWidth[fieldContent.fieldSize]
+    }
 
     let fieldFormDiv;
 
     switch (fieldType) {
       case 'single-line':
         fieldFormDiv = (
-          <div>
-            <label>Untitled</label>
+          <div className="field-container">
+            <label>{fieldContent.fieldLabel}</label>
             <div>
-              <input type="text" />
+              <input type="text" style={fieldSizeStyle} />
             </div>
           </div>
         )
         break;
       case 'multiple-line':
         fieldFormDiv = (
-          <div>
-            <label>Untitled</label>
+          <div className="field-container">
+            <label>{fieldContent.fieldLabel}</label>
             <div>
               <textarea />
             </div>
@@ -76,8 +90,8 @@ class Field extends React.Component {
         break;
       case 'multiple-choice':
         fieldFormDiv = (
-          <div>
-            <label>Untitled</label>
+          <div className="field-container">
+            <label>{fieldContent.fieldLabel}</label>
             <div>
               <div>
                 <input type="radio" name="first" value="First Choice" />  First Choice
@@ -94,8 +108,8 @@ class Field extends React.Component {
         break;
       case 'checkboxes':
         fieldFormDiv = (
-          <div>
-            <label>Untitled</label>
+          <div className="field-container">
+            <label>{fieldContent.fieldLabel}</label>
             <div>
               <div>
                 <input type="checkbox" name="first" value="First Choice" /> First Choice
@@ -113,8 +127,8 @@ class Field extends React.Component {
         break;
       case 'dropdown':
         fieldFormDiv = (
-          <div>
-            <label>Untitled</label>
+          <div className="field-container">
+            <label>{fieldContent.fieldLabel}</label>
             <div>
               <select>
                 <option value=""></option>
@@ -128,7 +142,7 @@ class Field extends React.Component {
         break;
       case 'address':
         fieldFormDiv = (
-          <div>
+          <div className="field-container">
             <label>Address</label>
             <div className="container">
               <div className="street-address">
@@ -178,10 +192,11 @@ class Field extends React.Component {
     }
 
     let fieldForm = (
-      <li className={"Field " + fieldType + fieldStatus} onClick={this._onEdit.bind(this, fieldId)}>
+      <li className={"Field " + fieldType + fieldStatus} onClick={this._onEdit.bind(this, fieldId, fieldType)}>
         {fieldFormDiv}
-        <div className="fieldActions" onClick={ (function(e) { e.stopPropagation(); this._onDestroy(fieldId)}).bind(this) }>
-          <img className="delete" />
+        <div className="fieldActions">
+          <img className="add" onClick={ (function(e) { e.stopPropagation(); this._onAddBelow(fieldId, fieldType)}).bind(this) }/>
+          <img className="delete" onClick={ (function(e) { e.stopPropagation(); this._onDestroy(fieldId)}).bind(this) }/>
         </div>
       </li>
     )
