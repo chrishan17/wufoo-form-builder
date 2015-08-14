@@ -1,19 +1,23 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+import Morearty from 'morearty';
+import reactMixin from 'react-mixin';
 import 'normalize.css/normalize.css'
 import './App.less';
 import Header from '../Header/Header.jsx';
 import Footer from '../Footer/Footer.jsx';
 import FormBuilder from '../FormBuilder/FormBuilder.jsx';
 
-export default class App extends React.Component {
+@reactMixin.decorate(Morearty.Mixin)
+class App extends React.Component {
 
   render() {
+    let binding = this.getDefaultBinding();
+    let fieldsBinding = binding.sub('fields');
     return (
       <div className="App">
         <div className="App-container">
           <Header />
-          <FormBuilder />
+          <FormBuilder binding={fieldsBinding} />
           <Footer />
         </div>
       </div>
@@ -21,3 +25,5 @@ export default class App extends React.Component {
   }
 
 };
+
+export default App;

@@ -9,7 +9,7 @@ module.exports = {
       'webpack/hot/only-dev-server',
       path.join(__dirname, 'app/main.js')
     ],
-    vendors: ['react', 'react-bootstrap']
+    vendors: ['react']
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -18,7 +18,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      loaders: ['react-hot', 'babel'],
+      loaders: ['react-hot', 'babel?stage=1'],
       include: path.join(__dirname, 'app')
     }, {
       test: /\.css$/,
@@ -27,7 +27,7 @@ module.exports = {
       test: /\.less$/,
       loader: 'style!css!less'
     }, {
-      test: /\.(png|jpg|git|woff|woff2|ttf|eot|svg)$/,
+      test: /\.(png|jpg|git|woff|woff2|ttf|eot|svg|gif)$/,
       loader: 'url?limit=10000'
     }]
   },

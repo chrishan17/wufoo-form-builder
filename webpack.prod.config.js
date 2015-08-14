@@ -14,7 +14,7 @@ module.exports = {
   module: {
     loaders:[{
       test: /\.jsx?$/,
-      loader: 'babel',
+      loader: 'babel?stage=1',
       include: path.join(__dirname, 'app')
     },{
       test: /\.css$/,
@@ -23,7 +23,7 @@ module.exports = {
       test: /\.less$/,
       loader: 'style!css!less'
     }, {
-      test: /\.(png|jpg|git|woff|woff2|ttf|eot|svg)$/,
+      test: /\.(png|jpg|git|woff|woff2|ttf|eot|svg|gif)$/,
       loader: 'url?limit=10000'
     }]
   },
