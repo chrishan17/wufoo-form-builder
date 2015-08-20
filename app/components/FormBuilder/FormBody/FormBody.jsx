@@ -2,7 +2,13 @@ import React from 'react';
 import Morearty from 'morearty';
 import reactMixin from 'react-mixin';
 import './FormBody.less';
-import FieldActions from '../../../actions/FieldActions.js'
+import FieldActions from '../../../actions/FieldActions.js';
+import SingleLine from './SingleLine.jsx';
+import MultipleLine from './MultipleLine.jsx';
+import MultipleChoice from './MultipleChoice.jsx';
+import Checkboxes from './Checkboxes.jsx';
+import Dropdown from './Dropdown.jsx'
+import Address from './Address.jsx';
 
 var fieldWidth = {
   'small': '30%',
@@ -70,112 +76,32 @@ class Field extends React.Component {
     switch (fieldType) {
       case 'single-line':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div>
-              <input type="text" style={fieldSizeStyle} />
-            </div>
-          </div>
+          <SingleLine fieldContent={fieldContent} fieldSizeStyle={fieldSizeStyle} />
         )
         break;
       case 'multiple-line':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div>
-              <textarea />
-            </div>
-          </div>
+          <MultipleLine fieldContent={fieldContent} />
         )
         break;
       case 'multiple-choice':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div>
-              <div>
-                <input type="radio" name="first" value="First Choice" />  First Choice
-              </div>
-              <div>
-                <input type="radio" name="second" value="Second Choice" />  Second Choice
-              </div>
-              <div>
-                <input type="radio" name="third" value="Third Choice" />  Third Choice
-              </div>
-            </div>
-          </div>
+          <MultipleChoice fieldContent={fieldContent} />
         )
         break;
       case 'checkboxes':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div>
-              <div>
-                <input type="checkbox" name="first" value="First Choice" /> First Choice
-              </div>
-              <div>
-                <input type="checkbox" name="second" value="Second Choice" /> Second Choice
-              </div>
-              <div>
-                <input type="checkbox" name="third" value="Third Choice" /> Third Choice
-              </div>
-
-            </div>
-          </div>
+          <Checkboxes fieldContent={fieldContent} />
         )
         break;
       case 'dropdown':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div>
-              <select>
-                <option value=""></option>
-                <option value="first">First Choice</option>
-                <option value="second">Second Choice</option>
-                <option value="third">Third Choice</option>
-              </select>
-            </div>
-          </div>
+          <Dropdown fieldContent={fieldContent} />
         )
         break;
       case 'address':
         fieldFormDiv = (
-          <div className="field-container">
-            <label>{fieldContent.fieldLabel}</label>
-            <div className="container">
-              <div className="street-address">
-                <input name="Field" type="text" />
-                <label htmlFor="Field">Street Address</label>
-              </div>
-              <div className="address-line">
-                <input name="Field" type="text" />
-                <label htmlFor="Field">Address Line2</label>
-              </div>
-              <div className="city">
-                <input name="Field" type="text" />
-                <label htmlFor="Field">City</label>
-              </div>
-              <div className="state-province-region">
-                <input name="Field" type="text" />
-                <label htmlFor="Field">State / Province / Region</label>
-              </div>
-              <div className="postal-zip-code">
-                <input name="Field" type="text" />
-                <label htmlFor="Field">Postal / Zip Code</label>
-              </div>
-              <div className="country">
-                <select>
-                  <option value=""></option>
-                  <option value="china">China</option>
-                  <option value="america">America</option>
-                  <option value="canada">Canada</option>
-                </select>
-                <label htmlFor="Field">Country</label>
-              </div>
-            </div>
-          </div>
+          <Address fieldContent={fieldContent} />
         )
         break;
 
