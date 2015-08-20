@@ -36,11 +36,13 @@ var FieldActions = {
     });
   },
 
-  update(fieldIndex, fieldContent) {
+  update(fieldIndex, fieldContent, type, subIndex) {
     console.log('update');
     AppDispatcher.dispatch({
       fieldIndex,
       fieldContent,
+      type,
+      subIndex,
       actionType: FieldConstants.FIELD_UPDATE
     });
   },

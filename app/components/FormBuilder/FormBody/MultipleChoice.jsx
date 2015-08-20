@@ -1,25 +1,29 @@
 import React from 'react';
 
 class MultipleChoice extends React.Component {
+
   render() {
     let fieldContent = this.props.fieldContent;
+    let multipleChoice = fieldContent.multipleChoice;
+
+    let multipleChoiceDivs = multipleChoice.map((choice, index) => {
+      return (
+        <div key={index}>
+          <input type="radio" name={choice.name} value={choice.value} /> {choice.value}
+        </div>
+      )
+    })
+
     return (
       <div className="field-container">
         <label>{fieldContent.fieldLabel}</label>
         <div>
-          <div>
-            <input type="radio" name="first" value="First Choice" />  First Choice
-          </div>
-          <div>
-            <input type="radio" name="second" value="Second Choice" />  Second Choice
-          </div>
-          <div>
-            <input type="radio" name="third" value="Third Choice" />  Third Choice
-          </div>
+          {multipleChoiceDivs}
         </div>
       </div>
     )
   }
+
 }
 
 export default MultipleChoice;

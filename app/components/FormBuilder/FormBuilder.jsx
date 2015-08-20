@@ -19,7 +19,7 @@ class FormBuilder extends React.Component {
       <div className="FormBuilder">
         <div className={"FormBuilder-container " + nowShowing}>
           <FormSelector binding={binding} onCreate={this._onCreate} onChangeTab={this._onChangeTab} onUpdate={this._onUpdate} />
-          <FormBody binding={fieldsBinding} onDestroy={this._onDestroy} onEdit={this._onEdit} onAddBelow={this._onAddBelow} />
+          <FormBody binding={fieldsBinding} onDestroy={this._onDestroy} onEdit={this._onEdit} onAddBelow={this._onAddBelow} onMove={this._onMove}/>
         </div>
       </div>
     )
@@ -41,12 +41,21 @@ class FormBuilder extends React.Component {
     FieldActions.changeTab(tabType);
   }
 
-  _onUpdate(fieldIndex, fieldContent) {
-    FieldActions.update(fieldIndex, fieldContent);
+  _onUpdate(fieldIndex, fieldContent, type, subIndex) {
+    FieldActions.update(fieldIndex, fieldContent, type, subIndex);
   }
 
   _onAddBelow(id, type) {
     FieldActions.addBelow(id, type);
+  }
+
+  _onMove(fields, id, afterId) {
+    const field = fields.filter(c => c.id === id)[0];
+    const afterField = fields.filter(c => c.id === afterId)[0];
+    const fieldIndex = fields.indexOf(field);
+    const afterIndex = fields.indexOf(afterField);
+
+    FieldActions.move(field, afterField, fieldIndex, afterIndex);
   }
 
 };

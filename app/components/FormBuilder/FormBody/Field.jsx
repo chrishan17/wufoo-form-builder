@@ -26,7 +26,7 @@ const fieldTarget = {
     const draggedId = monitor.getItem().id;
 
     if (draggedId !== props.id) {
-      props.moveField(draggedId, props.id);
+      props.onMove(draggedId, props.id);
     }
   }
 };

@@ -1,26 +1,29 @@
 import React from 'react';
 
 class Checkboxes extends React.Component {
+
   render() {
     let fieldContent = this.props.fieldContent;
+    let checkboxes = fieldContent.checkboxes;
+
+    let checkboxDivs = checkboxes.map((checkbox, index) => {
+      return (
+        <div key={index}>
+          <input type="checkbox" name={checkbox.name} value={checkbox.value} /> {checkbox.value}
+        </div>
+      )
+    })
+
     return (
       <div className="field-container">
         <label>{fieldContent.fieldLabel}</label>
         <div>
-          <div>
-            <input type="checkbox" name="first" value="First Choice" /> First Choice
-          </div>
-          <div>
-            <input type="checkbox" name="second" value="Second Choice" /> Second Choice
-          </div>
-          <div>
-            <input type="checkbox" name="third" value="Third Choice" /> Third Choice
-          </div>
-
+          {checkboxDivs}
         </div>
       </div>
     )
   }
+
 }
 
 export default Checkboxes;

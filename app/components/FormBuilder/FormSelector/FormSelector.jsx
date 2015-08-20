@@ -20,8 +20,8 @@ class FormSelector extends React.Component {
    * @param  {Number} fieldIndex   [the index of the editing field]
    * @param  {[type]} fieldContent [the editing field content]
    */
-  _onUpdate(fieldIndex, fieldContent) {
-    this.props.onUpdate(fieldIndex, fieldContent);
+  _onUpdate(fieldIndex, fieldContent, type, subIndex = -1) {
+    this.props.onUpdate(fieldIndex, fieldContent, type, subIndex);
   }
 
   _buttonMap(field, index) {
@@ -29,20 +29,23 @@ class FormSelector extends React.Component {
   }
 
   _fieldMap(fieldEditingContent, nowEditing, fieldType, index) {
+
     switch (fieldType) {
+
       case 'label':
         return (
           <div key={index}>
             <label className="field-label">Field Label</label>
-            <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
+            <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'LABEL_UPDATE')}} />
           </div>
         )
         break;
+
       case 'size':
         return (
           <div key={index}>
             <label className="field-label">Field Size</label>
-            <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldSize: event.target.value})}} >
+            <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'SIZE_UPDATE')}} >
               <option value="small">Small</option>
               <option value="medium">Medium</option>
               <option value="large">Large</option>
@@ -50,6 +53,46 @@ class FormSelector extends React.Component {
           </div>
         )
         break;
+
+      case 'checkboxes':
+        return (
+          <div key={index}>
+            <label className="field-label">Choices</label>
+            {
+              fieldEditingContent.checkboxes.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" value={choice.value} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'CHECKBOX_UPDATE', index, )}} />
+                    <img className="add" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'CHECKBOX_ADD_BELOW', index) } />
+                    <img className="delete" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'CHECKBOX_DELETE', index) } />
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+
+        break;
+
+      case 'multipleChoice':
+        return (
+          <div key={index}>
+            <label className="field-label">Choices</label>
+            {
+              fieldEditingContent.multipleChoice.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" value={choice.value} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'MULTIPLE_CHOICE_UPDATE', index)}} />
+                    <img className="add" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'MULTIPLE_CHOICE_ADD_BELOW', index) } />
+                    <img className="delete" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'MULTIPLE_CHOICE_DELETE', index) } />
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+        break;
+
       default:
         return (
           <div>
@@ -143,10 +186,10 @@ class FormSelector extends React.Component {
           fieldsToEdit = ['label'];
           break;
         case 'multiple-choice':
-          fieldsToEdit = ['label'];
+          fieldsToEdit = ['label', 'multipleChoice'];
           break;
         case 'checkboxes':
-          fieldsToEdit = ['label'];
+          fieldsToEdit = ['label', 'checkboxes'];
           break;
         case 'dropdown':
           fieldsToEdit = ['label'];

@@ -12,15 +12,6 @@ import Field from './Field.jsx';
 @reactMixin.decorate(Morearty.Mixin)
 class FormBody extends React.Component {
 
-  moveField(fields, id, afterId) {
-    const field = fields.filter(c => c.id === id)[0];
-    const afterField = fields.filter(c => c.id === afterId)[0];
-    const fieldIndex = fields.indexOf(field);
-    const afterIndex = fields.indexOf(afterField);
-
-    FieldActions.move(field, afterField, fieldIndex, afterIndex);
-  }
-
   render() {
     let binding = this.getDefaultBinding();
     let fields = binding.get();
@@ -28,7 +19,7 @@ class FormBody extends React.Component {
     let fieldsDivs = fields.map((field, index) => {
       let fieldBinding = binding.sub(index);
       return (
-        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} onAddBelow={this.props.onAddBelow} key={fieldBinding.toJS('id')} id={fieldBinding.toJS('id')} moveField={this.moveField.bind(this, fields.toJS())}/>
+        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} onAddBelow={this.props.onAddBelow} onMove={this.props.onMove.bind(this, fields.toJS())} key={fieldBinding.toJS('id')} id={fieldBinding.toJS('id')} />
       );
     });
 
