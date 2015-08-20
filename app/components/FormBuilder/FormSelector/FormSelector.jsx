@@ -24,8 +24,39 @@ class FormSelector extends React.Component {
     this.props.onUpdate(fieldIndex, fieldContent);
   }
 
-  _fieldMap(field, index) {
+  _buttonMap(field, index) {
     return <div className={"field " + field.type} key={index} onClick={this._onCreate.bind(this, field.type)}>{field.content}</div>
+  }
+
+  _fieldMap(fieldEditingContent, nowEditing, fieldType, index) {
+    switch (fieldType) {
+      case 'label':
+        return (
+          <div key={index}>
+            <label className="field-label">Field Label</label>
+            <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
+          </div>
+        )
+        break;
+      case 'size':
+        return (
+          <div key={index}>
+            <label className="field-label">Field Size</label>
+            <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldSize: event.target.value})}} >
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        )
+        break;
+      default:
+        return (
+          <div>
+            Choose one to Edit
+          </div>
+        )
+    }
   }
 
   render() {
@@ -69,9 +100,9 @@ class FormSelector extends React.Component {
       content: 'Form Setting'
     }];
 
-    const standardFields = standardFieldTypes.map(this._fieldMap.bind(this));
+    const standardFields = standardFieldTypes.map(this._buttonMap.bind(this));
 
-    const fancyFields = fancyFieldTypes.map(this._fieldMap.bind(this));
+    const fancyFields = fancyFieldTypes.map(this._buttonMap.bind(this));
 
     const tabs = tabTypes.map((tab, index) => {
       let isShowing = nowShowing === tab.type ? ' showing' : '';
@@ -103,87 +134,35 @@ class FormSelector extends React.Component {
 
     } else if (nowShowing === 'field-setting') {
 
-      let tabToShowContainer;
+      let fieldsToEdit;
       switch (nowEditing.type) {
         case 'single-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-              <div>
-                <label className="field-label">Field Size</label>
-                <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldSize: event.target.value})}} >
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
-                  <option value="large">Large</option>
-                </select>
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label', 'size'];
           break;
         case 'multiple-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         case 'multiple-choice':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
-        case 'multiple-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+        case 'checkboxes':
+          fieldsToEdit = ['label'];
           break;
         case 'dropdown':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         case 'address':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         default:
-          tabToShowContainer = (
-            <div>
-              Choose one to Edit
-            </div>
-          )
+          fieldsToEdit = ['nothing'];
       }
+
+      let fields = fieldsToEdit.map(this._fieldMap.bind(this, fieldEditingContent, nowEditing));
 
       tabToShow = (
         <div className="tab-body field-setting">
-          {tabToShowContainer}
+          {fields}
         </div>
       )
 

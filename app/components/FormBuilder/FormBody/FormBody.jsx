@@ -143,7 +143,7 @@ class Field extends React.Component {
       case 'address':
         fieldFormDiv = (
           <div className="field-container">
-            <label>Address</label>
+            <label>{fieldContent.fieldLabel}</label>
             <div className="container">
               <div className="street-address">
                 <input name="Field" type="text" />

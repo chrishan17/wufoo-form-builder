@@ -1,4 +1,4 @@
-# Wufoo Fomr Builder
+# Wufoo Form Builder
 
 Create a Wufoo-like form builder. Use `localstorage` as data storage.
 

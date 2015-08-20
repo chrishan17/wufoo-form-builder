@@ -111,7 +111,7 @@ var addBelow = (id, type) => {
       type,
       editing: false,
       content: Immutable.Map({
-        fieldLabel: 'below',
+        fieldLabel: 'Untitled',
         fieldSize: 'medium',
         placeholder: ''
       })
