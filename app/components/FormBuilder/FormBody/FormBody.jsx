@@ -31,11 +31,12 @@ class FormBody extends React.Component {
             <ul className="field-list">{fieldsDivs}</ul>
           </form>
           <div className="form-buttons">
+            <div className="submit" onClick={this.props.onSave} >Save Form</div>
           </div>
         </div>
       </div>
     )
-  }
+}
 
 };
 

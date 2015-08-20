@@ -19,9 +19,8 @@ class FormBuilder extends React.Component {
       <div className="FormBuilder">
         <div className={"FormBuilder-container " + nowShowing}>
           <FormSelector binding={binding} onCreate={this._onCreate} onChangeTab={this._onChangeTab} onUpdate={this._onUpdate} />
-          <FormBody binding={fieldsBinding} onDestroy={this._onDestroy} onEdit={this._onEdit} onAddBelow={this._onAddBelow} onMove={this._onMove}/>
-        </div>
-      </div>
+          <FormBody binding={fieldsBinding} onDestroy={this._onDestroy} onEdit={this._onEdit} onAddBelow={this._onAddBelow} onMove={this._onMove} onSave={this._onSave} />
+        </div> </div>
     )
   }
 
@@ -56,6 +55,11 @@ class FormBuilder extends React.Component {
     const afterIndex = fields.indexOf(afterField);
 
     FieldActions.move(field, afterField, fieldIndex, afterIndex);
+  }
+
+  _onSave() {
+    console.log('hi');
+    FieldActions.save();
   }
 
 };

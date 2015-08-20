@@ -7,5 +7,6 @@ export default keyMirror({
   FIELD_UPDATE: null,
   FIELD_ADD_BELOW: null,
   FIELD_MOVE: null,
+  FIELD_SAVE: null,
   CHNAGE_TAB: null
 });

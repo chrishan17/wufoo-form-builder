@@ -9,13 +9,20 @@ const CHANGE_EVENT = 'change';
 let lastEditId;
 let lastEditIndex;
 
-let initialState = {
-  nowShowing: 'add-field',
-  nowEditing: {
-    type: "",
-    index: -1
-  },
-  fields: []
+let initialState;
+let initialStateString = localStorage.getItem('state');
+
+if (initialStateString) {
+  initialState = Immutable.fromJS(JSON.parse(initialStateString));
+} else {
+  initialState = {
+    nowShowing: 'add-field',
+    nowEditing: {
+      type: "",
+      index: -1
+    },
+    fields: []
+  }
 }
 
 let Ctx = Morearty.createContext({
@@ -230,6 +237,10 @@ let move = (field, afterField, fieldIndex, afterIndex) => {
 
 }
 
+let save = () => {
+  localStorage.setItem('state', JSON.stringify(getBinding().toJS()));
+}
+
 class FieldStore extends Store {
 
   constructor() {
@@ -277,6 +288,10 @@ FieldStoreInstance.dispatchToken = AppDispatcher.register(action => {
     case FieldConstants.FIELD_MOVE:
       move(action.field, action.afterField, action.fieldIndex, action.afterIndex);
       FieldStoreInstance.emitChange();
+      break;
+
+    case FieldConstants.FIELD_SAVE:
+      save();
       break;
 
     default:

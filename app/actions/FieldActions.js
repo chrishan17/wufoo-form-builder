@@ -64,7 +64,14 @@ var FieldActions = {
       fieldIndex,
       afterIndex,
       actionType: FieldConstants.FIELD_MOVE
-    })
+    });
+  },
+
+  save() {
+    console.log('save');
+    AppDispatcher.dispatch({
+      actionType: FieldConstants.FIELD_SAVE
+    });
   }
 
 }
