@@ -104,7 +104,6 @@ var addBelow = (id, type) => {
   var fieldIndex = Ctx.getBinding().get('fields').findIndex(function(field) {
     return field.get('id') === id;
   });
-  console.log(fieldIndex);
   Ctx.getBinding().update('fields', fields => {
     return fields.splice(fieldIndex+1, 0, Immutable.Map({
       id: Date.now(),
@@ -117,6 +116,14 @@ var addBelow = (id, type) => {
       })
     }));
   });
+}
+
+var move = (field, afterField, fieldIndex, afterIndex) => {
+
+  let binding = Ctx.getBinding().sub('fields');
+  binding.set(fieldIndex, Immutable.fromJS(afterField));
+  binding.set(afterIndex, Immutable.fromJS(field));
+
 }
 
 class FieldStore extends Store {
@@ -160,6 +167,11 @@ FieldStoreInstance.dispatchToken = AppDispatcher.register(action => {
 
     case FieldConstants.FIELD_ADD_BELOW:
       addBelow(action.id, action.type);
+      FieldStoreInstance.emitChange();
+      break;
+
+    case FieldConstants.FIELD_MOVE:
+      move(action.field, action.afterField, action.fieldIndex, action.afterIndex);
       FieldStoreInstance.emitChange();
       break;
 

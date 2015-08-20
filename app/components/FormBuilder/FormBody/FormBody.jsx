@@ -1,23 +1,25 @@
 import React from 'react';
 import Morearty from 'morearty';
 import reactMixin from 'react-mixin';
+import Immutable from 'immutable';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd/modules/backends/HTML5';
 import './FormBody.less';
 import FieldActions from '../../../actions/FieldActions.js';
-import SingleLine from './SingleLine.jsx';
-import MultipleLine from './MultipleLine.jsx';
-import MultipleChoice from './MultipleChoice.jsx';
-import Checkboxes from './Checkboxes.jsx';
-import Dropdown from './Dropdown.jsx'
-import Address from './Address.jsx';
+import Field from './Field.jsx';
 
-var fieldWidth = {
-  'small': '30%',
-  'medium': '50%',
-  'large': '100%'
-}
-
+@DragDropContext(HTML5Backend)
 @reactMixin.decorate(Morearty.Mixin)
 class FormBody extends React.Component {
+
+  moveField(fields, id, afterId) {
+    const field = fields.filter(c => c.id === id)[0];
+    const afterField = fields.filter(c => c.id === afterId)[0];
+    const fieldIndex = fields.indexOf(field);
+    const afterIndex = fields.indexOf(afterField);
+
+    FieldActions.move(field, afterField, fieldIndex, afterIndex);
+  }
 
   render() {
     let binding = this.getDefaultBinding();
@@ -26,7 +28,7 @@ class FormBody extends React.Component {
     let fieldsDivs = fields.map((field, index) => {
       let fieldBinding = binding.sub(index);
       return (
-        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} onAddBelow={this.props.onAddBelow} key={fieldBinding.toJS('id')} />
+        <Field binding={fieldBinding} onDestroy={this.props.onDestroy} onEdit={this.props.onEdit} onAddBelow={this.props.onAddBelow} key={fieldBinding.toJS('id')} id={fieldBinding.toJS('id')} moveField={this.moveField.bind(this, fields.toJS())}/>
       );
     });
 
@@ -46,90 +48,4 @@ class FormBody extends React.Component {
 
 };
 
-@reactMixin.decorate(Morearty.Mixin)
-class Field extends React.Component {
-
-  _onDestroy(id) {
-    this.props.onDestroy(id);
-  }
-
-  _onEdit(id, type) {
-    this.props.onEdit(id, type);
-  }
-
-  _onAddBelow(id, type) {
-    this.props.onAddBelow(id, type);
-  }
-
-  render() {
-    let binding = this.getDefaultBinding();
-
-    let fieldType = binding.get('type');
-    let fieldId = binding.get('id');
-    let fieldContent = binding.get('content').toJS();
-    let fieldSizeStyle = {
-      width: fieldWidth[fieldContent.fieldSize]
-    }
-
-    let fieldFormDiv;
-
-    switch (fieldType) {
-      case 'single-line':
-        fieldFormDiv = (
-          <SingleLine fieldContent={fieldContent} fieldSizeStyle={fieldSizeStyle} />
-        )
-        break;
-      case 'multiple-line':
-        fieldFormDiv = (
-          <MultipleLine fieldContent={fieldContent} />
-        )
-        break;
-      case 'multiple-choice':
-        fieldFormDiv = (
-          <MultipleChoice fieldContent={fieldContent} />
-        )
-        break;
-      case 'checkboxes':
-        fieldFormDiv = (
-          <Checkboxes fieldContent={fieldContent} />
-        )
-        break;
-      case 'dropdown':
-        fieldFormDiv = (
-          <Dropdown fieldContent={fieldContent} />
-        )
-        break;
-      case 'address':
-        fieldFormDiv = (
-          <Address fieldContent={fieldContent} />
-        )
-        break;
-
-      default:
-
-    }
-
-    let fieldStatus;
-
-    if (binding.get('editing')) {
-      fieldStatus = ' editing';
-    } else {
-      fieldStatus = '';
-    }
-
-    let fieldForm = (
-      <li className={"Field " + fieldType + fieldStatus} onClick={this._onEdit.bind(this, fieldId, fieldType)}>
-        {fieldFormDiv}
-        <div className="fieldActions">
-          <img className="add" onClick={ (function(e) { e.stopPropagation(); this._onAddBelow(fieldId, fieldType)}).bind(this) }/>
-          <img className="delete" onClick={ (function(e) { e.stopPropagation(); this._onDestroy(fieldId)}).bind(this) }/>
-        </div>
-      </li>
-    )
-
-    return fieldForm
-
-  }
-
-}
 export default FormBody;

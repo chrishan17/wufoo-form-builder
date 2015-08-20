@@ -40,6 +40,7 @@
     "keymirror": "^0.1.1",
     "morearty": "^0.7.24",
     "react": "^0.13.3",
+    "react-dnd": "^1.1.4",
     "react-mixin": "^1.7.0"
   }
 }
