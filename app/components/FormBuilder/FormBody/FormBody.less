@@ -7,7 +7,6 @@
     form {
       overflow: auto;
       margin: 10px 0 0 15px;
-      padding: 0 0 95px 0;
       ul {
         width: 64%;
         min-height: 395px;
@@ -102,16 +101,44 @@
           bottom: -15px;
 
           .delete {
-            content: url('./delete.png');
+            content: url('../delete.png');
           }
 
           .add {
-            content: url('./add.png');
+            content: url('../add.png');
             margin-right: 5px;
           }
         }
       }
     }
-
   }
+
+  .form-buttons {
+    padding: 25px 0 30px 0;
+    width: 630px;
+    background: #fff6bf;
+    border-top: 1px solid #f7da77;
+    text-align: center;
+    .submit {
+      line-height: 200%;
+      cursor: pointer;
+      color: #63A142;
+      font-weight: bold;
+      display: inline-block;
+      margin: 0 .7em 0 0;
+      padding: 5px 10px 6px 10px;
+      border: 1px solid #dedede;
+      border-right: 1px solid #bbb;
+      border-bottom: 1px solid #bfbfbf;
+      background-color: #FFF;
+      border-radius: 11px;
+      background: -webkit-linear-gradient(top, #FFF, #E9E9E9);
+      box-shadow: rgba(0,0,0,0.1) 0px 1px 1px;
+      &:hover {
+        box-shadow: rgba(0,0,0,0.25) 1px 1px 3px;
+      }
+    }
+  }
+
+
 }

@@ -4,79 +4,117 @@ import Store from './Store.js';
 import AppDispatcher from '../dispatcher/AppDispatcher.js';
 import FieldConstants from '../constants/FieldConstants.js';
 
-var CHANGE_EVENT = 'change';
+const CHANGE_EVENT = 'change';
 
-var lastEditId;
-var lastEditIndex;
+let lastEditId;
+let lastEditIndex;
 
-var initialState = {
-  nowShowing: 'add-field',
-  nowEditing: {
-    type: "",
-    index: -1
-  },
-  fields: []
+let initialState;
+let initialStateString = localStorage.getItem('state');
+
+if (initialStateString) {
+  initialState = Immutable.fromJS(JSON.parse(initialStateString));
+} else {
+  initialState = {
+    nowShowing: 'add-field',
+    nowEditing: {
+      type: "",
+      index: -1
+    },
+    fields: []
+  }
 }
 
-var Ctx = Morearty.createContext({
+let Ctx = Morearty.createContext({
+
   initialState: initialState
+
 });
 
-// TODO: write a function to get Ctx.getBinding()
+let getBinding = () => {
 
-var create = type => {
+  return Ctx.getBinding();
+
+}
+
+let create = type => {
+
   let id = Date.now();
-  Ctx.getBinding().update('fields', fields => {
-    return fields.push(Immutable.Map({
+
+  getBinding().update('fields', fields => {
+    return fields.push(Immutable.fromJS({
       id,
       type,
       editing: false,
-      content: Immutable.Map({
+      content: {
         fieldLabel: 'Untitled',
         fieldSize: 'medium',
-        placeholder: ''
-      })
+        placeholder: '',
+        checkboxes: [{
+          name: 'first',
+          value: 'First Choice'
+        }, {
+          name: 'second',
+          value: 'Second Choice'
+        }, {
+          name: 'third',
+          value: 'Third Choice'
+        }],
+        multipleChoice: [{
+          name: 'first',
+          value: 'First Choice'
+        }, {
+          name: 'second',
+          value: 'Second Choice'
+        }, {
+          name: 'third',
+          value: 'Third Choice'
+        }]
+      }
     }));
   });
 }
 
-var destroy = id => {
+let destroy = id => {
 
-  var fieldIndex = Ctx.getBinding().get('fields').findIndex(function(field) {
+  var binding = getBinding();
+
+  let fieldIndex = binding.get('fields').findIndex(function(field) {
     return field.get('id') === id;
   });
 
   if (fieldIndex !== -1) {
     lastEditIndex = null;
     lastEditId = null;
-    Ctx.getBinding().sub('fields').remove(fieldIndex);
-    Ctx.getBinding().set('nowShowing', 'add-field');
-    Ctx.getBinding().sub('nowEditing').atomically().set('type', '').set('index', -1).commit();
+    binding.sub('fields').remove(fieldIndex);
+    binding.set('nowShowing', 'add-field');
+    binding.sub('nowEditing').atomically().set('type', '').set('index', -1).commit();
   } else {
     console.error('cannot find the field');
   }
 
 }
 
-var edit = (id, type) => {
+let edit = (id, type) => {
 
+  let binding = getBinding();
   // Click on a new field
   if (id !== lastEditId) {
     // Change the last editing field's editing to false
     if (lastEditId) {
-      Ctx.getBinding().sub('fields').sub(lastEditIndex).set('editing', false)
+      binding.sub('fields').sub(lastEditIndex).set('editing', false)
     }
 
-    var fieldIndex = Ctx.getBinding().get('fields').findIndex(function(field) {
+    let fieldIndex = binding.get('fields').findIndex(function(field) {
       return field.get('id') === id;
     });
 
     if (fieldIndex !== -1) {
       lastEditId = id;
       lastEditIndex = fieldIndex;
-      Ctx.getBinding().sub('fields').sub(fieldIndex).set('editing', true);
-      Ctx.getBinding().set('nowShowing', 'field-setting');
-      Ctx.getBinding().sub('nowEditing').atomically().set('type', type).set('index', fieldIndex).commit();
+      binding.sub('fields').sub(fieldIndex).set('editing', true);
+      binding.set('nowShowing', 'field-setting');
+      binding.sub('nowEditing').atomically().set('type', type).set('index', fieldIndex).commit();
     } else {
       console.error('cannot find the field');
     }
@@ -84,39 +122,123 @@ var edit = (id, type) => {
 
 }
 
-var changeTab = tabType => {
+let changeTab = tabType => {
+
   if (tabType === 'add-field') {
-    Ctx.getBinding().sub('fields').sub(lastEditIndex).set('editing', false);
+    getBinding().sub('fields').sub(lastEditIndex).set('editing', false);
     lastEditId = null;
     lastEditIndex = null;
   }
 
-  Ctx.getBinding().set('nowShowing', tabType);
+  getBinding().set('nowShowing', tabType);
 
 }
 
-var update = (fieldIndex, fieldContent) => {
-  let fieldBinding = Ctx.getBinding().sub('fields').sub(fieldIndex);
-  fieldBinding.sub('content').merge(Immutable.Map(fieldContent));
+let update = (fieldIndex, newFieldContent, type, subIndex) => {
+
+  let fieldContent = getBinding().sub('fields').sub(fieldIndex).sub('content');
+
+  switch (type) {
+
+    case 'LABEL_UPDATE':
+      fieldContent.set('fieldLabel', newFieldContent);
+      break;
+
+    case 'SIZE_UPDATE':
+      fieldContent.set('fieldSize', newFieldContent);
+      break;
+
+    case 'CHECKBOX_UPDATE':
+      fieldContent.sub('checkboxes').sub(subIndex).set('value', newFieldContent);
+      break;
+
+    case 'CHECKBOX_ADD_BELOW':
+      fieldContent.update('checkboxes', checkboxes => {
+        return checkboxes.splice(subIndex+1, 0, Immutable.fromJS({
+          name: 'new',
+          value: ''
+        }))
+      })
+      break;
+
+    case 'CHECKBOX_DELETE':
+      fieldContent.sub('checkboxes').remove(subIndex)
+      break;
+
+    case 'MULTIPLE_CHOICE_UPDATE':
+      fieldContent.sub('multipleChoice').sub(subIndex).set('value', newFieldContent);
+      break;
+
+    case 'MULTIPLE_CHOICE_ADD_BELOW':
+      fieldContent.update('multipleChoice', checkboxes => {
+        return checkboxes.splice(subIndex+1, 0, Immutable.fromJS({
+          name: 'new',
+          value: ''
+        }))
+      })
+      break;
+
+    case 'MULTIPLE_CHOICE_DELETE':
+      fieldContent.sub('multipleChoice').remove(subIndex)
+      break;
+
+    default:
+
+  }
+
 }
 
-var addBelow = (id, type) => {
-  var fieldIndex = Ctx.getBinding().get('fields').findIndex(function(field) {
+let addBelow = (id, type) => {
+
+  let fieldIndex = getBinding().get('fields').findIndex(function(field) {
     return field.get('id') === id;
   });
-  console.log(fieldIndex);
-  Ctx.getBinding().update('fields', fields => {
-    return fields.splice(fieldIndex+1, 0, Immutable.Map({
+
+  getBinding().update('fields', fields => {
+    return fields.splice(fieldIndex+1, 0, Immutable.fromJS({
       id: Date.now(),
       type,
       editing: false,
-      content: Immutable.Map({
-        fieldLabel: 'below',
+      content: {
+        fieldLabel: 'Untitled',
         fieldSize: 'medium',
-        placeholder: ''
-      })
+        placeholder: '',
+        checkboxes: [{
+          name: 'first',
+          value: 'First Choice'
+        }, {
+          name: 'second',
+          value: 'Second Choice'
+        }, {
+          name: 'third',
+          value: 'Third Choice'
+        }],
+        multipleChoice: [{
+          name: 'first',
+          value: 'First Choice'
+        }, {
+          name: 'second',
+          value: 'Second Choice'
+        }, {
+          name: 'third',
+          value: 'Third Choice'
+        }]
+      }
     }));
   });
+
+}
+
+let move = (field, afterField, fieldIndex, afterIndex) => {
+
+  let binding = getBinding().sub('fields');
+  binding.set(fieldIndex, Immutable.fromJS(afterField));
+  binding.set(afterIndex, Immutable.fromJS(field));
+
+}
+
+let save = () => {
+  localStorage.setItem('state', JSON.stringify(getBinding().toJS()));
 }
 
 class FieldStore extends Store {
@@ -154,13 +276,22 @@ FieldStoreInstance.dispatchToken = AppDispatcher.register(action => {
       break;
 
     case FieldConstants.FIELD_UPDATE:
-      update(action.fieldIndex, action.fieldContent);
+      update(action.fieldIndex, action.fieldContent, action.type, action.subIndex);
       FieldStoreInstance.emitChange();
       break;
 
     case FieldConstants.FIELD_ADD_BELOW:
       addBelow(action.id, action.type);
       FieldStoreInstance.emitChange();
+      break;
+
+    case FieldConstants.FIELD_MOVE:
+      move(action.field, action.afterField, action.fieldIndex, action.afterIndex);
+      FieldStoreInstance.emitChange();
+      break;
+
+    case FieldConstants.FIELD_SAVE:
+      save();
       break;
 
     default:

@@ -1,4 +1,4 @@
-import keyMirror from 'keyMirror'
+import keyMirror from 'keymirror'
 
 export default keyMirror({
   FIELD_CREATE: null,
@@ -6,5 +6,7 @@ export default keyMirror({
   FIELD_EDIT: null,
   FIELD_UPDATE: null,
   FIELD_ADD_BELOW: null,
+  FIELD_MOVE: null,
+  FIELD_SAVE: null,
   CHNAGE_TAB: null
 });

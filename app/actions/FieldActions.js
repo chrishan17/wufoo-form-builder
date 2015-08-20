@@ -6,53 +6,74 @@ var FieldActions = {
   create(type) {
     console.log('create');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.FIELD_CREATE,
-      type
+      type,
+      actionType: FieldConstants.FIELD_CREATE
     });
   },
 
   destroy(id) {
     console.log('destroy');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.FIELD_DESTROY,
-      id
+      id,
+      actionType: FieldConstants.FIELD_DESTROY
     });
   },
 
   edit(id, type) {
     console.log('edit');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.FIELD_EDIT,
       id,
-      type
+      type,
+      actionType: FieldConstants.FIELD_EDIT
     });
   },
 
   changeTab(tabType) {
     console.log('changeTab');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.CHANGE_TAB,
-      tabType
+      tabType,
+      actionType: FieldConstants.CHANGE_TAB
     });
   },
 
-  update(fieldIndex, fieldContent) {
+  update(fieldIndex, fieldContent, type, subIndex) {
     console.log('update');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.FIELD_UPDATE,
       fieldIndex,
-      fieldContent
+      fieldContent,
+      type,
+      subIndex,
+      actionType: FieldConstants.FIELD_UPDATE
     });
   },
 
   addBelow(id, type) {
     console.log('add below');
     AppDispatcher.dispatch({
-      actionType: FieldConstants.FIELD_ADD_BELOW,
       id,
-      type
+      type,
+      actionType: FieldConstants.FIELD_ADD_BELOW
+    });
+  },
+
+  move(field, afterField, fieldIndex, afterIndex) {
+    console.log('move');
+    AppDispatcher.dispatch({
+      field,
+      afterField,
+      fieldIndex,
+      afterIndex,
+      actionType: FieldConstants.FIELD_MOVE
+    });
+  },
+
+  save() {
+    console.log('save');
+    AppDispatcher.dispatch({
+      actionType: FieldConstants.FIELD_SAVE
     });
   }
+
 }
 
 export default FieldActions;

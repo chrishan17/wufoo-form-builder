@@ -20,12 +20,86 @@ class FormSelector extends React.Component {
    * @param  {Number} fieldIndex   [the index of the editing field]
    * @param  {[type]} fieldContent [the editing field content]
    */
-  _onUpdate(fieldIndex, fieldContent) {
-    this.props.onUpdate(fieldIndex, fieldContent);
+  _onUpdate(fieldIndex, fieldContent, type, subIndex = -1) {
+    this.props.onUpdate(fieldIndex, fieldContent, type, subIndex);
   }
 
-  _fieldMap(field, index) {
+  _buttonMap(field, index) {
     return <div className={"field " + field.type} key={index} onClick={this._onCreate.bind(this, field.type)}>{field.content}</div>
+  }
+
+  _fieldMap(fieldEditingContent, nowEditing, fieldType, index) {
+
+    switch (fieldType) {
+
+      case 'label':
+        return (
+          <div key={index}>
+            <label className="field-label">Field Label</label>
+            <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'LABEL_UPDATE')}} />
+          </div>
+        )
+        break;
+
+      case 'size':
+        return (
+          <div key={index}>
+            <label className="field-label">Field Size</label>
+            <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'SIZE_UPDATE')}} >
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        )
+        break;
+
+      case 'checkboxes':
+        return (
+          <div key={index}>
+            <label className="field-label">Choices</label>
+            {
+              fieldEditingContent.checkboxes.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" value={choice.value} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'CHECKBOX_UPDATE', index, )}} />
+                    <img className="add" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'CHECKBOX_ADD_BELOW', index) } />
+                    <img className="delete" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'CHECKBOX_DELETE', index) } />
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+
+        break;
+
+      case 'multipleChoice':
+        return (
+          <div key={index}>
+            <label className="field-label">Choices</label>
+            {
+              fieldEditingContent.multipleChoice.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" value={choice.value} onChange={(event) => {this._onUpdate(nowEditing.index, event.target.value, 'MULTIPLE_CHOICE_UPDATE', index)}} />
+                    <img className="add" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'MULTIPLE_CHOICE_ADD_BELOW', index) } />
+                    <img className="delete" onClick={ this._onUpdate.bind(this, nowEditing.index, '', 'MULTIPLE_CHOICE_DELETE', index) } />
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+        break;
+
+      default:
+        return (
+          <div>
+            Choose one to Edit
+          </div>
+        )
+    }
   }
 
   render() {
@@ -69,9 +143,9 @@ class FormSelector extends React.Component {
       content: 'Form Setting'
     }];
 
-    const standardFields = standardFieldTypes.map(this._fieldMap.bind(this));
+    const standardFields = standardFieldTypes.map(this._buttonMap.bind(this));
 
-    const fancyFields = fancyFieldTypes.map(this._fieldMap.bind(this));
+    const fancyFields = fancyFieldTypes.map(this._buttonMap.bind(this));
 
     const tabs = tabTypes.map((tab, index) => {
       let isShowing = nowShowing === tab.type ? ' showing' : '';
@@ -103,87 +177,35 @@ class FormSelector extends React.Component {
 
     } else if (nowShowing === 'field-setting') {
 
-      let tabToShowContainer;
+      let fieldsToEdit;
       switch (nowEditing.type) {
         case 'single-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-              <div>
-                <label className="field-label">Field Size</label>
-                <select value={fieldEditingContent.fieldSize} onChange={(event) => {this._onUpdate(nowEditing.index, {fieldSize: event.target.value})}} >
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
-                  <option value="large">Large</option>
-                </select>
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label', 'size'];
           break;
         case 'multiple-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         case 'multiple-choice':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label', 'multipleChoice'];
           break;
-        case 'multiple-line':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+        case 'checkboxes':
+          fieldsToEdit = ['label', 'checkboxes'];
           break;
         case 'dropdown':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         case 'address':
-          tabToShowContainer = (
-            <div>
-              <div>
-                <label className="field-label">Field Label</label>
-                <textarea name="field-label" value={fieldEditingContent.fieldLabel} onChange={(event) => {console.log(event.target.value); this._onUpdate(nowEditing.index, {fieldLabel: event.target.value})}} />
-              </div>
-            </div>
-          )
+          fieldsToEdit = ['label'];
           break;
         default:
-          tabToShowContainer = (
-            <div>
-              Choose one to Edit
-            </div>
-          )
+          fieldsToEdit = ['nothing'];
       }
+
+      let fields = fieldsToEdit.map(this._fieldMap.bind(this, fieldEditingContent, nowEditing));
 
       tabToShow = (
         <div className="tab-body field-setting">
-          {tabToShowContainer}
+          {fields}
         </div>
       )
 
